@@ -19,22 +19,31 @@ export default async function Home() {
   return (
     <div>
       {/* Hero */}
-      <section className="bg-black text-white">
-        <div className="mx-auto max-w-6xl px-4 py-20 text-center">
-          <span className="rounded-full bg-brand px-4 py-1 text-sm font-semibold">Beauty &amp; Essentials</span>
-          <h1 className="mx-auto mt-6 max-w-2xl text-4xl font-bold sm:text-5xl">
-            Premium skin care and everyday <span className="text-green-400">provisions</span> in one place.
+      <section className="relative overflow-hidden bg-[#1d1c1a] text-[#f4f1eb]">
+        <div className="absolute right-[-8rem] top-[-10rem] h-[30rem] w-[30rem] rounded-full border border-[#c39a6b]/30" />
+        <div className="absolute bottom-[-14rem] left-[-6rem] h-[30rem] w-[30rem] rounded-full border border-[#c39a6b]/20" />
+        <div className="relative mx-auto grid max-w-6xl items-end gap-12 px-4 py-24 md:grid-cols-[1.15fr_0.85fr] md:py-32">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-[0.25em] text-[#c39a6b]">The considered edit · Lagos</p>
+            <h1 className="mt-6 max-w-3xl text-5xl leading-[0.98] font-bold sm:text-7xl">
+              The daily ritual, <em className="font-normal text-[#c39a6b]">elevated.</em>
           </h1>
-          <p className="mx-auto mt-4 max-w-xl text-neutral-300">
-            Glow with top skin care brands and stock up on quality provisions — all delivered to your door.
+          <p className="mt-6 max-w-xl text-lg leading-8 text-neutral-300">
+            A finely edited collection of skin care and provisions for a home that feels well kept.
           </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <Link href="/shop" className="rounded-full bg-brand px-8 py-3 font-semibold hover:bg-green-600">
-              Start Shopping
+          <div className="mt-9 flex flex-wrap gap-3">
+            <Link href="/shop" className="bg-[#c39a6b] px-8 py-4 font-semibold text-[#1d1c1a] hover:bg-[#d5b384]">
+              Explore collection
             </Link>
-            <Link href="/shop?category=skin-care" className="rounded-full border border-white px-8 py-3 font-semibold hover:bg-white hover:text-black">
-              Shop Skin Care
+            <Link href="/shop?category=skin-care" className="border border-neutral-500 px-8 py-4 font-semibold hover:border-white">
+              Skin care edit
             </Link>
+          </div>
+          </div>
+          <div className="hidden border-l border-neutral-700 pl-8 md:block">
+            <p className="text-sm uppercase tracking-[0.2em] text-[#c39a6b]">LordTemps / 01</p>
+            <p className="mt-5 font-serif text-4xl leading-tight">Quiet luxury for everyday living.</p>
+            <p className="mt-5 max-w-xs text-sm leading-6 text-neutral-400">Authentic products, thoughtfully sourced and delivered across Nigeria.</p>
           </div>
         </div>
       </section>
@@ -44,8 +53,8 @@ export default async function Home() {
       {/* Categories */}
       <section className="mx-auto max-w-6xl px-4 py-16">
         <div className="flex items-end justify-between">
-          <h2 className="text-2xl font-bold">Shop by category</h2>
-          <Link href="/shop" className="font-semibold text-brand-dark hover:underline">View all →</Link>
+          <h2 className="text-3xl font-bold">Shop by category</h2>
+          <Link href="/shop" className="text-sm font-semibold uppercase tracking-[0.12em] text-brand-dark hover:underline">View collection →</Link>
         </div>
         <p className="text-neutral-500">Everything your skin and pantry needs.</p>
         <div className="mt-6 grid gap-6 sm:grid-cols-2">
@@ -53,14 +62,14 @@ export default async function Home() {
             <Link
               key={c.id}
               href={`/shop?category=${c.slug}`}
-              className="group flex items-center justify-between rounded-2xl border border-neutral-200 p-8 transition hover:border-brand hover:bg-brand-light"
+              className="group flex items-center justify-between border border-[var(--line)] bg-[#f8f5f0]/70 p-8 transition hover:border-brand hover:shadow-[0_12px_30px_rgba(29,28,26,0.08)]"
             >
               <div>
-                <span className="text-5xl">{c.icon}</span>
-                <h3 className="mt-3 text-xl font-bold group-hover:text-brand-dark">{c.name}</h3>
+                <span className="text-xs font-semibold uppercase tracking-[0.2em] text-brand">Collection 0{c.id}</span>
+                <h3 className="mt-4 text-2xl font-bold group-hover:text-brand-dark">{c.name}</h3>
                 <p className="text-sm text-neutral-500">{c.product_count} products</p>
               </div>
-              <span className="text-3xl text-neutral-400 group-hover:text-brand">→</span>
+              <span className="text-2xl text-neutral-400 group-hover:text-brand">↗</span>
             </Link>
           ))}
         </div>

@@ -17,19 +17,19 @@ export default function ProductCard({ product }: { product: Product }) {
 
   return (
     <>
-      <div className="group flex flex-col overflow-hidden rounded-xl border border-neutral-200 bg-white transition hover:shadow-lg">
-        <button onClick={() => setOpen(true)} className="flex h-44 items-center justify-center bg-brand-light text-6xl">
+      <div className="group flex flex-col overflow-hidden border border-[var(--line)] bg-[#f8f5f0] transition hover:-translate-y-1 hover:shadow-[0_16px_32px_rgba(29,28,26,0.1)]">
+        <button onClick={() => setOpen(true)} className="flex h-52 items-center justify-center bg-brand-light text-6xl">
           {product.image || "🛒"}
         </button>
         <div className="flex flex-1 flex-col gap-1 p-4">
-          <span className="text-xs font-semibold uppercase tracking-wide text-neutral-500">{product.category_name}</span>
-          <h3 className="font-semibold text-black">{product.name}</h3>
+          <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-neutral-500">{product.category_name}</span>
+          <h3 className="font-serif text-xl font-bold text-black">{product.name}</h3>
           <p className="text-sm text-yellow-600">★ {Number(product.rating).toFixed(1)}</p>
           <p className="mt-auto text-lg font-bold text-brand-dark">{formatNaira(product.price)}</p>
           <div className="mt-2 flex gap-2">
             <button
               onClick={addToCart}
-              className={`flex-1 rounded-lg px-3 py-2 text-sm font-semibold text-white transition ${
+              className={`flex-1 px-3 py-2 text-sm font-semibold text-white transition ${
                 added ? "bg-black" : "bg-brand hover:bg-brand-dark"
               }`}
             >
@@ -37,7 +37,7 @@ export default function ProductCard({ product }: { product: Product }) {
             </button>
             <button
               onClick={() => setOpen(true)}
-              className="rounded-lg border border-black px-3 py-2 text-sm font-semibold hover:bg-black hover:text-white"
+              className="border border-black px-3 py-2 text-sm font-semibold hover:bg-black hover:text-white"
             >
               Details
             </button>

@@ -1,11 +1,14 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #0a0a0a;
-  --brand: #15803d;
-  --brand-dark: #14532d;
-  --brand-light: #dcfce7;
+  --background: #f4f1eb;
+  --foreground: #1d1c1a;
+  --brand: #9b6b3f;
+  --brand-dark: #6f4528;
+  --brand-light: #e9e0d4;
+  --ink: #1d1c1a;
+  --muted: #746f68;
+  --line: #d9d1c7;
 }
 
 @theme inline {
@@ -14,12 +17,28 @@
   --color-brand: var(--brand);
   --color-brand-dark: var(--brand-dark);
   --color-brand-light: var(--brand-light);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-body);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  font-family: var(--font-body), sans-serif;
+  background-image: radial-gradient(rgba(29, 28, 26, 0.045) 0.7px, transparent 0.7px);
+  background-size: 9px 9px;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display), Georgia, serif;
+  letter-spacing: 0;
+}
+
+button, a, input, select, textarea {
+  transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+}
+
+::selection {
+  background: var(--brand);
+  color: #fff;
 }
