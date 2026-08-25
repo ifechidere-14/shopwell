@@ -15,8 +15,8 @@ export default function Header() {
           <span className="hidden sm:inline tracking-wide">Complimentary delivery on orders above ₦50,000</span>
           <span className="sm:hidden tracking-wide">Nigeria · NGN</span>
           <div className="flex items-center gap-4">
-            <Link href="/help" className="hover:text-green-400">Help Center</Link>
-            <Link href="/contact" className="hover:text-green-400">Contact Us</Link>
+            <Link href="/help" className="hover:text-[#f29a70]">Help Center</Link>
+            <Link href="/contact" className="hover:text-[#f29a70]">Contact Us</Link>
             <span>Nigeria · NGN · EN</span>
           </div>
         </div>

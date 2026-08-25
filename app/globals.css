@@ -1,14 +1,15 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f4f1eb;
-  --foreground: #1d1c1a;
-  --brand: #9b6b3f;
-  --brand-dark: #6f4528;
-  --brand-light: #e9e0d4;
-  --ink: #1d1c1a;
-  --muted: #746f68;
-  --line: #d9d1c7;
+  --background: #fffaf3;
+  --foreground: #172326;
+  --brand: #087f8c;
+  --brand-dark: #07545c;
+  --brand-light: #d9f0ed;
+  --accent: #e4774f;
+  --ink: #172326;
+  --muted: #627175;
+  --line: #d5e1df;
 }
 
 @theme inline {
@@ -25,7 +26,7 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-body), sans-serif;
-  background-image: radial-gradient(rgba(29, 28, 26, 0.045) 0.7px, transparent 0.7px);
+  background-image: radial-gradient(rgba(8, 127, 140, 0.07) 0.7px, transparent 0.7px);
   background-size: 9px 9px;
 }
 
@@ -39,6 +40,6 @@ button, a, input, select, textarea {
 }
 
 ::selection {
-  background: var(--brand);
+  background: var(--accent);
   color: #fff;
 }

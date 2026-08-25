@@ -19,20 +19,20 @@ export default async function Home() {
   return (
     <div>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-[#1d1c1a] text-[#f4f1eb]">
-        <div className="absolute right-[-8rem] top-[-10rem] h-[30rem] w-[30rem] rounded-full border border-[#c39a6b]/30" />
-        <div className="absolute bottom-[-14rem] left-[-6rem] h-[30rem] w-[30rem] rounded-full border border-[#c39a6b]/20" />
+      <section className="relative overflow-hidden bg-[#083f46] text-[#fffaf3]">
+        <div className="absolute right-[-8rem] top-[-10rem] h-[30rem] w-[30rem] rounded-full border border-[#f29a70]/40" />
+        <div className="absolute bottom-[-14rem] left-[-6rem] h-[30rem] w-[30rem] rounded-full border border-[#7ed4ce]/30" />
         <div className="relative mx-auto grid max-w-6xl items-end gap-12 px-4 py-24 md:grid-cols-[1.15fr_0.85fr] md:py-32">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.25em] text-[#c39a6b]">The considered edit · Lagos</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.25em] text-[#f29a70]">The considered edit · Lagos</p>
             <h1 className="mt-6 max-w-3xl text-5xl leading-[0.98] font-bold sm:text-7xl">
-              The daily ritual, <em className="font-normal text-[#c39a6b]">elevated.</em>
+              The daily ritual, <em className="font-normal text-[#f29a70]">elevated.</em>
           </h1>
           <p className="mt-6 max-w-xl text-lg leading-8 text-neutral-300">
             A finely edited collection of skin care and provisions for a home that feels well kept.
           </p>
           <div className="mt-9 flex flex-wrap gap-3">
-            <Link href="/shop" className="bg-[#c39a6b] px-8 py-4 font-semibold text-[#1d1c1a] hover:bg-[#d5b384]">
+            <Link href="/shop" className="bg-[#f29a70] px-8 py-4 font-semibold text-[#172326] hover:bg-[#ffb08b]">
               Explore collection
             </Link>
             <Link href="/shop?category=skin-care" className="border border-neutral-500 px-8 py-4 font-semibold hover:border-white">
@@ -41,7 +41,7 @@ export default async function Home() {
           </div>
           </div>
           <div className="hidden border-l border-neutral-700 pl-8 md:block">
-            <p className="text-sm uppercase tracking-[0.2em] text-[#c39a6b]">LordTemps / 01</p>
+            <p className="text-sm uppercase tracking-[0.2em] text-[#f29a70]">LordTemps / 01</p>
             <p className="mt-5 font-serif text-4xl leading-tight">Quiet luxury for everyday living.</p>
             <p className="mt-5 max-w-xs text-sm leading-6 text-neutral-400">Authentic products, thoughtfully sourced and delivered across Nigeria.</p>
           </div>
