@@ -32,6 +32,10 @@ export type Product = {
   usage_instructions?: string | null;
   review_count?: string;
   low_stock_threshold?: number;
+  video_url?: string | null;
+  allergy_warnings?: string | null;
+  skin_types?: string[];
+  faqs?: unknown[];
 };
 
 export type ProductFilters = {
@@ -77,6 +81,16 @@ export async function getProduct(id: string): Promise<Product | null> {
     [id]
   );
   return rows[0] ?? null;
+}
+
+export async function getRelatedProducts(categorySlug: string, productId: string): Promise<Product[]> {
+  const { rows } = await pool.query<Product>(
+    `SELECT p.*, c.name AS category_name, c.slug AS category_slug
+     FROM products p JOIN categories c ON c.id = p.category_id
+     WHERE c.slug = $1 AND p.id <> $2 ORDER BY p.rating DESC, p.created_at DESC LIMIT 4`,
+    [categorySlug, productId]
+  );
+  return rows;
 }
 
 export async function getCategories() {

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import NewsletterSignup from "@/components/NewsletterSignup";
 
 export default function Footer() {
   return (
@@ -9,6 +10,8 @@ export default function Footer() {
           <p className="mt-3 text-sm text-neutral-400">
             Premium skin care and quality provisions delivered to your door.
           </p>
+          <p className="mt-6 text-xs font-semibold uppercase tracking-[0.15em] text-[#c39a6b]">The private list</p>
+          <NewsletterSignup />
         </div>
         <div className="space-y-2 text-sm">
           <h4 className="font-semibold uppercase tracking-[0.15em] text-[#c39a6b]">Customer Service</h4>
@@ -27,6 +30,7 @@ export default function Footer() {
             <span title="Facebook">Facebook</span><span title="Instagram">Instagram</span>
           </p>
           <Link href="/login" className="block pt-2 text-neutral-400 hover:text-green-400">Login / Register</Link>
+          <Link href="/track-order" className="block text-neutral-400 hover:text-[#f29a70]">Track an order</Link>
         </div>
       </div>
       <div className="border-t border-neutral-700 py-4 text-center text-xs text-neutral-500">

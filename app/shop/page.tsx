@@ -1,6 +1,7 @@
 import Link from "next/link";
 import ProductCard from "@/components/ProductCard";
 import { getProducts } from "@/lib/db";
+import ShopTools from "@/components/ShopTools";
 
 export const dynamic = "force-dynamic";
 
@@ -59,6 +60,7 @@ export default async function ShopPage({
           );
         })}
       </div>
+      {products.length > 0 && <ShopTools products={products} />}
       {products.length > 0 ? (
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {products.map((p) => <ProductCard key={p.id} product={p} />)}
