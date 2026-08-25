@@ -10,6 +10,7 @@ export default function ProductActions({ product }: { product: Product }) {
   const [saved, setSaved] = useState(false);
   const [message, setMessage] = useState("");
   const [email, setEmail] = useState("");
+  const [frequency, setFrequency] = useState("monthly");
 
   useEffect(() => {
     const raw = localStorage.getItem("lordtempsmart-recent");
@@ -29,6 +30,12 @@ export default function ProductActions({ product }: { product: Product }) {
     setMessage(response.ok ? "We will email you when it returns." : data.error ?? "Could not save alert.");
   }
 
+  async function subscribe() {
+    const response = await fetch("/api/subscriptions", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ productId: product.id, quantity: 1, frequency }) });
+    const data = await response.json();
+    setMessage(response.ok ? "Subscription saved to your account." : data.error ?? "Log in to subscribe.");
+  }
+
   return (
     <div className="mt-6 space-y-3">
       <div className="flex gap-3">
@@ -37,6 +44,7 @@ export default function ProductActions({ product }: { product: Product }) {
         <button onClick={toggleWishlist} aria-label="Save to wishlist" className="rounded-lg border border-black px-4 text-xl hover:bg-black hover:text-white">♡</button>
       </div>
       {product.stock === 0 && <div className="border border-[var(--line)] p-3"><p className="text-sm font-semibold">Out of stock</p><div className="mt-2 flex gap-2"><input type="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="Email for restock alert" className="min-w-0 flex-1 border border-[var(--line)] px-3 py-2 text-sm" /><button onClick={() => void requestStock()} className="bg-black px-3 py-2 text-sm font-semibold text-white">Notify me</button></div></div>}
+      <div className="border border-[var(--line)] p-3"><p className="text-sm font-semibold">Subscribe and never run out</p><div className="mt-2 flex gap-2"><select value={frequency} onChange={(event) => setFrequency(event.target.value)} className="min-w-0 flex-1 border border-[var(--line)] px-3 py-2 text-sm"><option value="weekly">Every week</option><option value="monthly">Every month</option><option value="quarterly">Every quarter</option></select><button onClick={() => void subscribe()} className="bg-brand px-3 py-2 text-sm font-semibold text-white">Subscribe</button></div></div>
       {message && <p className="text-sm text-amber-700">{message} <Link href="/login" className="font-semibold underline">Login</Link></p>}
       <p className="text-sm text-neutral-500">Secure checkout available. Contact us on WhatsApp for help.</p>
     </div>

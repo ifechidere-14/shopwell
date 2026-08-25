@@ -1,5 +1,6 @@
 import { pool } from "@/lib/db";
 import { getSessionUser } from "@/lib/auth";
+import { randomInt } from "crypto";
 
 type IncomingLine = { id: string; quantity: number };
 
@@ -60,10 +61,11 @@ export async function POST(req: Request) {
         }
       }
       const finalTotal = total - discount;
+      const deliveryOtp = String(randomInt(100000, 1000000));
       const { rows: orderRows } = await client.query<{ id: string }>(
-        `INSERT INTO orders (user_id, customer_name, email, phone, address, total, discount, promo_code, payment_method)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id`,
-        [user?.id ?? null, customerName, email, phone ?? null, address, finalTotal, discount, validPromo, paymentMethod === "paystack" ? "paystack" : "cash_on_delivery"]
+        `INSERT INTO orders (user_id, customer_name, email, phone, address, total, discount, promo_code, payment_method, delivery_otp)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING id`,
+        [user?.id ?? null, customerName, email, phone ?? null, address, finalTotal, discount, validPromo, paymentMethod === "paystack" ? "paystack" : "cash_on_delivery", deliveryOtp]
       );
       const orderId = orderRows[0].id;
       for (const item of priced) {
