@@ -9,6 +9,8 @@ export default function CartPage() {
   const [placing, setPlacing] = useState(false);
   const [orderId, setOrderId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [deliveryFee, setDeliveryFee] = useState(0);
+  const [deliveryState, setDeliveryState] = useState("");
 
   async function checkout(formData: FormData) {
     setPlacing(true);
@@ -24,6 +26,7 @@ export default function CartPage() {
           address: formData.get("address"),
           promoCode: formData.get("promoCode"),
           paymentMethod: formData.get("paymentMethod"),
+          deliveryState: formData.get("deliveryState"),
           lines: lines.map((l) => ({ id: l.id, quantity: l.quantity })),
         }),
       });
@@ -44,6 +47,18 @@ export default function CartPage() {
         if (!payment.ok || !paymentData.data?.authorization_url)
           throw new Error(paymentData.error ?? "Online payment could not be started");
         window.location.assign(paymentData.data.authorization_url);
+        return;
+      }
+      if (paymentMethod === "flutterwave") {
+        const payment = await fetch("/api/payments/flutterwave/initialize", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: formData.get("email"), name: formData.get("customerName"), phone: formData.get("phone"), amount: data.total, reference: data.orderId }),
+        });
+        const paymentData = await payment.json();
+        if (!payment.ok || !paymentData.data?.link)
+          throw new Error(paymentData.message ?? "Flutterwave payment could not be started");
+        window.location.assign(paymentData.data.link);
         return;
       }
       setOrderId(data.orderId as string);
@@ -113,10 +128,12 @@ export default function CartPage() {
             <input name="email" type="email" required placeholder="Email" className="w-full rounded-lg border border-neutral-300 px-3 py-2" />
             <input name="phone" placeholder="Phone (optional)" className="w-full rounded-lg border border-neutral-300 px-3 py-2" />
             <textarea name="address" required placeholder="Delivery address" rows={3} className="w-full rounded-lg border border-neutral-300 px-3 py-2" />
+            <div><label className="text-xs font-semibold uppercase tracking-wide text-neutral-500">Delivery state</label><input name="deliveryState" value={deliveryState} onChange={(event) => setDeliveryState(event.target.value)} onBlur={async () => { if (!deliveryState) return; const response = await fetch(`/api/delivery/quote?state=${encodeURIComponent(deliveryState)}`); const quote = await response.json(); setDeliveryFee(Number(quote.fee) || 0); }} placeholder="e.g. Lagos" className="mt-1 w-full rounded-lg border border-neutral-300 px-3 py-2" />{deliveryState && <p className="mt-1 text-xs text-neutral-500">Estimated delivery: {formatNaira(deliveryFee)}</p>}</div>
             <input name="promoCode" placeholder="Promo code (optional)" className="w-full rounded-lg border border-neutral-300 px-3 py-2" />
             <select name="paymentMethod" defaultValue="cash" className="w-full rounded-lg border border-neutral-300 px-3 py-2" aria-label="Payment method">
               <option value="cash">Cash on delivery</option>
               <option value="paystack">Pay online with Paystack</option>
+              <option value="flutterwave">Pay online with Flutterwave</option>
             </select>
             {error && <p className="text-sm text-red-600">{error}</p>}
             <button

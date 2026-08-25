@@ -7,13 +7,14 @@ type IncomingLine = { id: string; quantity: number };
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { customerName, email, phone, address, promoCode, paymentMethod, lines } = body as {
+    const { customerName, email, phone, address, promoCode, paymentMethod, deliveryState, lines } = body as {
       customerName?: string;
       email?: string;
       phone?: string;
       address?: string;
       promoCode?: string;
       paymentMethod?: string;
+      deliveryState?: string;
       lines?: IncomingLine[];
     };
 
@@ -47,6 +48,11 @@ export async function POST(req: Request) {
     const client = await pool.connect();
     try {
       await client.query("BEGIN");
+      let deliveryFee = total >= 50000 ? 0 : 2500;
+      if (deliveryState) {
+        const { rows: zones } = await client.query<{ fee: string }>("SELECT fee FROM delivery_zones WHERE active = TRUE AND LOWER(name) = LOWER($1) LIMIT 1", [deliveryState]);
+        if (zones[0]) deliveryFee = total >= 50000 ? 0 : Number(zones[0].fee);
+      }
       let discount = 0;
       let validPromo: string | null = null;
       if (promoCode) {
@@ -60,12 +66,12 @@ export async function POST(req: Request) {
           validPromo = promo.code;
         }
       }
-      const finalTotal = total - discount;
+      const finalTotal = total - discount + deliveryFee;
       const deliveryOtp = String(randomInt(100000, 1000000));
       const { rows: orderRows } = await client.query<{ id: string }>(
-        `INSERT INTO orders (user_id, customer_name, email, phone, address, total, discount, promo_code, payment_method, delivery_otp)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING id`,
-        [user?.id ?? null, customerName, email, phone ?? null, address, finalTotal, discount, validPromo, paymentMethod === "paystack" ? "paystack" : "cash_on_delivery", deliveryOtp]
+        `INSERT INTO orders (user_id, customer_name, email, phone, address, total, discount, delivery_fee, promo_code, payment_method, delivery_otp)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING id`,
+        [user?.id ?? null, customerName, email, phone ?? null, address, finalTotal, discount, deliveryFee, validPromo, paymentMethod === "paystack" ? "paystack" : paymentMethod === "flutterwave" ? "flutterwave" : "cash_on_delivery", deliveryOtp]
       );
       const orderId = orderRows[0].id;
       for (const item of priced) {
