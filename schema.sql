@@ -22,23 +22,6 @@ CREATE TABLE IF NOT EXISTS users (
   created_at   TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
-ALTER TABLE products ADD COLUMN IF NOT EXISTS ingredients TEXT;
-ALTER TABLE products ADD COLUMN IF NOT EXISTS usage_instructions TEXT;
-ALTER TABLE products ADD COLUMN IF NOT EXISTS low_stock_threshold INT NOT NULL DEFAULT 5;
-ALTER TABLE products ADD COLUMN IF NOT EXISTS video_url TEXT;
-ALTER TABLE products ADD COLUMN IF NOT EXISTS allergy_warnings TEXT;
-ALTER TABLE products ADD COLUMN IF NOT EXISTS skin_types TEXT[] NOT NULL DEFAULT '{}';
-ALTER TABLE products ADD COLUMN IF NOT EXISTS faqs JSONB NOT NULL DEFAULT '[]';
-
-CREATE TABLE IF NOT EXISTS product_media (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(), product_id UUID NOT NULL REFERENCES products(id) ON DELETE CASCADE,
-  url TEXT NOT NULL, alt_text TEXT, sort_order INT NOT NULL DEFAULT 0
-);
-CREATE TABLE IF NOT EXISTS product_variants (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(), product_id UUID NOT NULL REFERENCES products(id) ON DELETE CASCADE,
-  name TEXT NOT NULL, price NUMERIC(12,2), stock INT NOT NULL DEFAULT 0, sku TEXT UNIQUE
-);
-
 CREATE TABLE IF NOT EXISTS products (
   id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   category_id INT NOT NULL REFERENCES categories(id),
