@@ -5,6 +5,7 @@ import { LogoutButton, StatusSelect } from "@/components/AdminControls";
 import AdminProductManager from "@/components/AdminProductManager";
 import RefundButton from "@/components/RefundButton";
 import AdminInventory from "@/components/AdminInventory";
+import AdminBusinessTools from "@/components/AdminBusinessTools";
 
 export const dynamic = "force-dynamic";
 
@@ -212,6 +213,7 @@ export default async function AdminPage() {
       </div>
       <AdminProductManager />
       <AdminInventory />
+      <AdminBusinessTools />
     </div>
   );
 }
