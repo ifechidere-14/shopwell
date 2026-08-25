@@ -1,6 +1,8 @@
 import Link from "next/link";
 import ProductCard from "@/components/ProductCard";
 import { getCategories, getProducts } from "@/lib/db";
+import ShoppingAssistant from "@/components/ShoppingAssistant";
+import InstagramFeed from "@/components/InstagramFeed";
 
 export const dynamic = "force-dynamic";
 
@@ -37,6 +39,8 @@ export default async function Home() {
         </div>
       </section>
 
+      <ShoppingAssistant />
+
       {/* Categories */}
       <section className="mx-auto max-w-6xl px-4 py-16">
         <div className="flex items-end justify-between">
@@ -61,6 +65,7 @@ export default async function Home() {
           ))}
         </div>
       </section>
+      <InstagramFeed />
 
       {/* Featured picks */}
       <section className="bg-brand-light/60 py-16">

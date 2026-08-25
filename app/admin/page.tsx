@@ -3,6 +3,7 @@ import { isAdminAuthenticated } from "@/lib/admin-auth";
 import AdminLoginForm from "@/components/AdminLogin";
 import { LogoutButton, StatusSelect } from "@/components/AdminControls";
 import AdminProductManager from "@/components/AdminProductManager";
+import RefundButton from "@/components/RefundButton";
 
 export const dynamic = "force-dynamic";
 
@@ -200,7 +201,7 @@ export default async function AdminPage() {
                     </td>
                     <td className="max-w-[220px] text-xs text-neutral-600">{o.items}</td>
                     <td className="whitespace-nowrap font-bold text-brand-dark">{formatNaira(o.total)}</td>
-                    <td><StatusSelect orderId={o.id} current={o.status} /></td>
+                    <td><StatusSelect orderId={o.id} current={o.status} /><div className="mt-2"><RefundButton orderId={o.id} total={o.total} /></div></td>
                   </tr>
                 ))}
               </tbody>
