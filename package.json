@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "db:migrate": "node scripts/migrate-db.mjs",
     "db:setup": "node scripts/setup-db.mjs",
     "build": "next build",
     "start": "next start",

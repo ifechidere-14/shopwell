@@ -43,6 +43,13 @@ Apply the schema to the same PostgreSQL database used by Render:
 npm run db:setup
 ```
 
+For an existing production database, use the migration-only command so existing
+products and orders are preserved:
+
+```bash
+npm run db:migrate
+```
+
 On Render, set `DATABASE_URL` to the database external connection string and
 run `npm run db:setup` once from the Render Shell, or use it as the service
 pre-deploy command. Keep the build command as `npm install && npm run build`
