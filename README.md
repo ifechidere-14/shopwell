@@ -34,3 +34,16 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Render database setup
+
+Apply the schema to the same PostgreSQL database used by Render:
+
+```bash
+npm run db:setup
+```
+
+On Render, set `DATABASE_URL` to the database external connection string and
+run `npm run db:setup` once from the Render Shell, or use it as the service
+pre-deploy command. Keep the build command as `npm install && npm run build`
+and the start command as `npm run start`.
