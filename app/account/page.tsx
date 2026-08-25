@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getSessionUser } from "@/lib/auth";
 import { pool, formatNaira } from "@/lib/db";
+import AccountTools from "@/components/AccountTools";
 
 export const dynamic = "force-dynamic";
 
@@ -16,12 +17,13 @@ export default async function AccountPage() {
       <p className="mt-2 text-neutral-500">{user.full_name} · {user.email}</p>
       <section className="mt-8">
         <h2 className="text-xl font-bold">Order history</h2>
-        {orders.length === 0 ? <p className="mt-3 text-neutral-500">No orders yet. <Link href="/shop" className="text-brand-dark underline">Start shopping</Link></p> : <div className="mt-4 space-y-3">{orders.map((order) => <div key={order.id} className="rounded-xl border border-neutral-200 p-4"><div className="flex flex-wrap justify-between gap-2"><strong>#{order.id.slice(0, 8)}</strong><span className="font-semibold text-brand-dark">{formatNaira(order.total)}</span></div><p className="mt-1 text-sm text-neutral-600">{order.items || "No items"}</p><p className="mt-2 text-sm"><span className="font-semibold capitalize">{order.status}</span> · payment {order.payment_status} · {new Date(order.created_at).toLocaleDateString("en-NG")}</p></div>)}</div>}
+        {orders.length === 0 ? <p className="mt-3 text-neutral-500">No orders yet. <Link href="/shop" className="text-brand-dark underline">Start shopping</Link></p> : <div className="mt-4 space-y-3">{orders.map((order) => <div key={order.id} className="rounded-xl border border-neutral-200 p-4"><div className="flex flex-wrap justify-between gap-2"><strong>#{order.id.slice(0, 8)}</strong><span className="font-semibold text-brand-dark">{formatNaira(order.total)}</span></div><p className="mt-1 text-sm text-neutral-600">{order.items || "No items"}</p><p className="mt-2 text-sm"><span className="font-semibold capitalize">{order.status}</span> · payment {order.payment_status} · {new Date(order.created_at).toLocaleDateString("en-NG")}</p><a href={`/api/orders/invoice?orderId=${order.id}&email=${encodeURIComponent(user.email)}`} className="mt-2 inline-block text-sm font-semibold text-brand-dark underline">Download invoice</a></div>)}</div>}
       </section>
       <section className="mt-10">
         <h2 className="text-xl font-bold">Saved items</h2>
         {saved.length === 0 ? <p className="mt-3 text-neutral-500">Your wishlist is empty.</p> : <div className="mt-4 grid gap-3 sm:grid-cols-3">{saved.map((item) => <Link key={item.id} href={`/shop/${item.id}`} className="rounded-xl border border-neutral-200 p-4 hover:border-brand"><p className="font-semibold">{item.name}</p><p className="mt-1 text-brand-dark">{formatNaira(item.price)}</p></Link>)}</div>}
       </section>
+      <AccountTools />
     </div>
   );
 }
