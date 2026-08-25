@@ -1,0 +1,12 @@
+"use client";
+
+import { useState } from "react";
+
+export default function AdminOperations() {
+  const [csv, setCsv] = useState("name,description,category_id,price,stock,image,featured,cost_price,supplier\n");
+  const [message, setMessage] = useState("");
+  const [profit, setProfit] = useState<{ revenue: string; cost: string; gross_profit: string } | null>(null);
+  async function importProducts(event: React.FormEvent) { event.preventDefault(); const response = await fetch("/api/admin/products/import", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ csv }) }); const data = await response.json(); setMessage(response.ok ? `${data.imported} products imported.` : data.error ?? "Import failed."); }
+  async function loadProfit() { const response = await fetch("/api/admin/reports/profit"); const data = await response.json(); if (response.ok) setProfit(data.report); }
+  return <section className="mt-8 grid gap-6 lg:grid-cols-2"><div className="rounded-2xl border border-neutral-200 p-6"><h2 className="font-bold">Bulk product import</h2><p className="mt-2 text-xs text-neutral-500">Use columns: name, description, category_id, price, stock, image, featured, cost_price, supplier.</p><form onSubmit={importProducts} className="mt-4 space-y-3"><textarea value={csv} onChange={(event) => setCsv(event.target.value)} rows={5} className="w-full rounded-lg border border-neutral-300 px-3 py-2 font-mono text-xs" /><button className="rounded-lg bg-brand px-4 py-2 font-semibold text-white">Import CSV</button></form>{message && <p className="mt-3 text-sm text-brand-dark">{message}</p>}</div><div className="rounded-2xl border border-neutral-200 p-6"><h2 className="font-bold">Profit report</h2><p className="mt-2 text-sm text-neutral-500">Gross margin based on recorded supplier cost prices.</p><button onClick={() => void loadProfit()} className="mt-4 rounded-lg border border-black px-4 py-2 text-sm font-semibold">Refresh report</button>{profit && <div className="mt-5 grid grid-cols-3 gap-3 text-sm"><div><p className="text-neutral-500">Revenue</p><p className="mt-1 font-bold">₦{Number(profit.revenue).toLocaleString("en-NG")}</p></div><div><p className="text-neutral-500">Cost</p><p className="mt-1 font-bold">₦{Number(profit.cost).toLocaleString("en-NG")}</p></div><div><p className="text-neutral-500">Gross profit</p><p className="mt-1 font-bold text-brand-dark">₦{Number(profit.gross_profit).toLocaleString("en-NG")}</p></div></div>}</div></section>;
+}
