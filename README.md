@@ -50,7 +50,13 @@ products and orders are preserved:
 npm run db:migrate
 ```
 
-On Render, set `DATABASE_URL` to the database external connection string and
-run `npm run db:setup` once from the Render Shell, or use it as the service
-pre-deploy command. Keep the build command as `npm install && npm run build`
-and the start command as `npm run start`.
+On the free Render plan, use this build command so the migration runs
+automatically during every deployment:
+
+```bash
+npm install && npm run db:migrate && npm run build
+```
+
+Set `DATABASE_URL` to the database external connection string. Keep the start
+command as `npm run start`. The migration is repeatable and preserves existing
+products and orders.
