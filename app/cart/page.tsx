@@ -23,11 +23,29 @@ export default function CartPage() {
           phone: formData.get("phone"),
           address: formData.get("address"),
           promoCode: formData.get("promoCode"),
+          paymentMethod: formData.get("paymentMethod"),
           lines: lines.map((l) => ({ id: l.id, quantity: l.quantity })),
         }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? "Checkout failed");
+      const paymentMethod = String(formData.get("paymentMethod") ?? "cash");
+      if (paymentMethod === "paystack") {
+        const payment = await fetch("/api/payments/initialize", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: formData.get("email"),
+            amount: data.total,
+            reference: data.orderId,
+          }),
+        });
+        const paymentData = await payment.json();
+        if (!payment.ok || !paymentData.data?.authorization_url)
+          throw new Error(paymentData.error ?? "Online payment could not be started");
+        window.location.assign(paymentData.data.authorization_url);
+        return;
+      }
       setOrderId(data.orderId as string);
       clear();
     } catch (e) {
@@ -96,6 +114,10 @@ export default function CartPage() {
             <input name="phone" placeholder="Phone (optional)" className="w-full rounded-lg border border-neutral-300 px-3 py-2" />
             <textarea name="address" required placeholder="Delivery address" rows={3} className="w-full rounded-lg border border-neutral-300 px-3 py-2" />
             <input name="promoCode" placeholder="Promo code (optional)" className="w-full rounded-lg border border-neutral-300 px-3 py-2" />
+            <select name="paymentMethod" defaultValue="cash" className="w-full rounded-lg border border-neutral-300 px-3 py-2" aria-label="Payment method">
+              <option value="cash">Cash on delivery</option>
+              <option value="paystack">Pay online with Paystack</option>
+            </select>
             {error && <p className="text-sm text-red-600">{error}</p>}
             <button
               disabled={placing}

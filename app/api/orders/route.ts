@@ -6,12 +6,13 @@ type IncomingLine = { id: string; quantity: number };
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { customerName, email, phone, address, promoCode, lines } = body as {
+    const { customerName, email, phone, address, promoCode, paymentMethod, lines } = body as {
       customerName?: string;
       email?: string;
       phone?: string;
       address?: string;
       promoCode?: string;
+      paymentMethod?: string;
       lines?: IncomingLine[];
     };
 
@@ -60,9 +61,9 @@ export async function POST(req: Request) {
       }
       const finalTotal = total - discount;
       const { rows: orderRows } = await client.query<{ id: string }>(
-        `INSERT INTO orders (user_id, customer_name, email, phone, address, total, discount, promo_code)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id`,
-        [user?.id ?? null, customerName, email, phone ?? null, address, finalTotal, discount, validPromo]
+        `INSERT INTO orders (user_id, customer_name, email, phone, address, total, discount, promo_code, payment_method)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id`,
+        [user?.id ?? null, customerName, email, phone ?? null, address, finalTotal, discount, validPromo, paymentMethod === "paystack" ? "paystack" : "cash_on_delivery"]
       );
       const orderId = orderRows[0].id;
       for (const item of priced) {
